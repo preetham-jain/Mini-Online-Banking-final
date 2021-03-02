@@ -15,9 +15,14 @@ public class Accounts {
     @GenericGenerator(name = "account_id_seq", strategy = "increment")
     @GeneratedValue(generator = "account_id_seq", strategy = GenerationType.AUTO)
 
-    private int id;
+    private Long id;
 
-    private String account_no;
-    private double accoutBalance;
+    @Column(unique = true)
+    private String accountNo;
+    private double accountBalance;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
 
 }
