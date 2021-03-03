@@ -16,12 +16,15 @@ public class Transactions {
     @GeneratedValue(generator = "transactions_id_seq", strategy = GenerationType.AUTO)
     private Long id;
 
+    private String recipientAccNo;
+    private String Date;
     private String type;
     private String status;
     private double amount;
+    private Long user_id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private Users user;
 
 }

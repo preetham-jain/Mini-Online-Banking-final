@@ -24,11 +24,10 @@ public class Users {
     private String phone_no;
     private String password;
     private String address;
-    private String PIN;
 
-    @OneToMany(mappedBy = "user")
-    private List<Accounts> accounts;
-
-    @OneToMany(mappedBy = "user")
-    private List<Transactions> transactions;
+//    @OneToMany(mappedBy = "user")
+//    private List<Accounts> accounts;
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Transactions> transactions;
 }

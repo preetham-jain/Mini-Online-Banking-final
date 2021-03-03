@@ -5,9 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TransactionRequestDTO {
-    private String senderAccount;
-    private String recipientAccount;
+public class WithdrawRequestDTO {
     private String pin;
+    private String accountNo;
     private double amount;
 }

@@ -20,9 +20,11 @@ public class Accounts {
     @Column(unique = true)
     private String accountNo;
     private double accountBalance;
+    private Long user_id;
+    private String pin;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private Users user;
 
 }
