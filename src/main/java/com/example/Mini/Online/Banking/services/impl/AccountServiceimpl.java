@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class AccountServiceimpl implements AccountService {
@@ -95,5 +95,33 @@ public class AccountServiceimpl implements AccountService {
         withdrawResponseDTO.setCurrentBalance(total);
         withdrawResponseDTO.setMessage("SuccessFul");
         return withdrawResponseDTO;
+    }
+
+
+    @Override
+    public CreateAccountResponseDTO createAccount(CreateAccountRequestDTO createAccountRequestDTO)
+    {
+        CreateAccountResponseDTO createAccountResponseDTO=new CreateAccountResponseDTO();
+        Accounts accounts=new Accounts();
+        BeanUtils.copyProperties(createAccountRequestDTO,accounts);
+
+        Random rand = new Random();
+
+        // Generate random integers in range 0 to 999
+        int No = rand.nextInt(1000);
+        String accountNo=""+No;
+        createAccountResponseDTO.setAccountBalance(0);
+        createAccountResponseDTO.setAccountNo(accountNo);
+        createAccountResponseDTO.setMessage("Account created Successful");
+        createAccountResponseDTO.setUserId(createAccountRequestDTO.getUserId());
+        accounts.setAccountNo(accountNo);
+        accounts.setUser_id(createAccountRequestDTO.getUserId());
+        accountRepository.save(accounts);
+
+        return createAccountResponseDTO;
+
+
+
+
     }
 }
