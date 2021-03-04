@@ -27,9 +27,30 @@ public class TransactionServiceimpl implements TransactionService {
     @Override
     public WithdrawResponseDTO depositToAccountById(WithdrawRequestDTO withdrawRequestDTO, Long user_id) {
 
-        WithdrawResponseDTO withdrawResponseDTO = new WithdrawResponseDTO();
 
+        WithdrawResponseDTO withdrawResponseDTO = new WithdrawResponseDTO();
         String accountNo = withdrawRequestDTO.getAccountNo();
+        List<Accounts> accountsList=accountRepository.getAccountFromId(user_id);
+        boolean accountExist=false;
+        for(Accounts accounts:accountsList)
+        {
+            String savedaccountNo = accounts.getAccountNo();
+            if(accountNo.equalsIgnoreCase(savedaccountNo))
+            {
+                accountExist=true;
+            }
+        }
+
+        System.out.println(accountsList);
+
+        if(accountExist==false) {
+            withdrawResponseDTO.setMessage("Account Number doesn't Exist");
+            withdrawResponseDTO.setCurrentBalance(0);
+            withdrawResponseDTO.setAmount(0);
+            return withdrawResponseDTO;
+        }
+
+
 
         String givenCode = withdrawRequestDTO.getPin();
 
@@ -48,6 +69,7 @@ public class TransactionServiceimpl implements TransactionService {
         if(depositAmount < 0) {
             withdrawResponseDTO.setCurrentBalance(currBalance);
             withdrawResponseDTO.setMessage("Invalid input for deposit amount!");
+            withdrawResponseDTO.setAmount(withdrawRequestDTO.getAmount());
             return withdrawResponseDTO;
         }
 
@@ -60,10 +82,11 @@ public class TransactionServiceimpl implements TransactionService {
 
             Transactions transactions = new Transactions();
             transactions.setAmount(depositAmount);
-            String timeStamp = new SimpleDateFormat("yyyy/MM/dd_HH/mm/ss").format(Calendar.getInstance().getTime());
+            String timeStamp = new SimpleDateFormat("yyyy:MM:dd:HH:mm:ss").format(Calendar.getInstance().getTime());
             transactions.setDate(timeStamp);
             transactions.setUser_id(user_id);
             transactions.setRecipientAccNo(null);
+            transactions.setMyAccNo(withdrawRequestDTO.getAccountNo());
             transactions.setStatus("Success");
             transactions.setType("Deposit");
 
@@ -72,11 +95,13 @@ public class TransactionServiceimpl implements TransactionService {
         }
         else{
             withdrawResponseDTO.setCurrentBalance(currBalance);
-            withdrawResponseDTO.setMessage("InValid Pin");
+            withdrawResponseDTO.setMessage("Invalid Pin");
+            withdrawResponseDTO.setAmount(0);
             return withdrawResponseDTO;
         }
         withdrawResponseDTO.setCurrentBalance(total);
-        withdrawResponseDTO.setMessage("SuccessFul");
+        withdrawResponseDTO.setMessage("Success");
+        withdrawResponseDTO.setAmount(withdrawRequestDTO.getAmount());
         return withdrawResponseDTO;
     }
 
@@ -122,10 +147,11 @@ public class TransactionServiceimpl implements TransactionService {
 
                 Transactions transactions = new Transactions();
                 transactions.setAmount(transferAmount);
-                String timeStamp = new SimpleDateFormat("yyyy/MM/dd_HH/mm/ss").format(Calendar.getInstance().getTime());
+                String timeStamp = new SimpleDateFormat("yyyy:MM:dd:HH:mm:ss").format(Calendar.getInstance().getTime());
                 transactions.setDate(timeStamp);
                 transactions.setUser_id(user_id);
                 transactions.setRecipientAccNo(recipientAccountNo);
+                transactions.setMyAccNo(senderAccountNo);
                 transactions.setStatus("Success");
                 transactions.setType("Transfer");
 
@@ -138,7 +164,7 @@ public class TransactionServiceimpl implements TransactionService {
         else {
             return "Invalid pin";
         }
-        return "Successfully transferred";
+        return "Success";
 
     }
 
@@ -159,3 +185,4 @@ public class TransactionServiceimpl implements TransactionService {
           return transactionResponseDTOS;
     }
 }
+

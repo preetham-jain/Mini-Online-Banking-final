@@ -16,6 +16,7 @@ public class Transactions {
     @GeneratedValue(generator = "transactions_id_seq", strategy = GenerationType.AUTO)
     private Long id;
 
+    private String myAccNo;
     private String recipientAccNo;
     private String Date;
     private String type;

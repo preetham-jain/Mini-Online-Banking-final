@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(path = "/account")
 public class AccountController {
@@ -23,15 +24,13 @@ public class AccountController {
     }
 
     @PutMapping("/withdraw/{id}")
-    public WithdrawResponseDTO withdrawFromAccount(@RequestBody WithdrawRequestDTO withdrawRequestDTO, @PathVariable Long id) {
+    public WithdrawResponseDTO withdrawFromAccount(@RequestBody WithdrawRequestDTO withdrawRequestDTO, @PathVariable("id") Long id) {
         return accountService.withdrawFromAccountById(withdrawRequestDTO, id);
     }
 
-    @PostMapping("/createAccount")
-    public CreateAccountResponseDTO createAccount(@RequestBody CreateAccountRequestDTO createAccountRequestDTO)
-    {
-
-        return accountService.createAccount(createAccountRequestDTO);
+    @PostMapping("/createAccount/{id}")
+    public CreateAccountResponseDTO createAccount(@RequestBody CreateAccountRequestDTO createAccountRequestDTO, @PathVariable("id") Long id) {
+        return accountService.createAccount(createAccountRequestDTO, id);
     }
 
 

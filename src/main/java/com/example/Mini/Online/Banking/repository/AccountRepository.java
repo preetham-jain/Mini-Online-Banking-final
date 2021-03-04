@@ -17,6 +17,12 @@ public interface AccountRepository extends CrudRepository<Accounts, Long> {
     @Query(value = "SELECT * FROM accounts WHERE account_no = ?1", nativeQuery = true)
     Accounts getAccountByAccountNo(String accountNo);
 
+    /*
+    @Query(value ="SELECT account_no FROM accounts WHERE user_id = 1?", nativeQuery = true)
+    List<String> getAllaccounts(Long id);
+    */
+
+
 
 
 

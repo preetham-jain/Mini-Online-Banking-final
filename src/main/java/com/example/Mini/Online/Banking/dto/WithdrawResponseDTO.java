@@ -8,4 +8,7 @@ import lombok.Setter;
 public class WithdrawResponseDTO {
     private String message;
     private double currentBalance;
+    private double amount;
+
+
 }

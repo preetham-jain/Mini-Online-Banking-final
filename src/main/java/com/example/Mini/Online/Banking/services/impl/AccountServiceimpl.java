@@ -48,6 +48,28 @@ public class AccountServiceimpl implements AccountService {
 
         String givenCode = withdrawRequestDTO.getPin();
 
+        List<Accounts> accountsList=accountRepository.getAccountFromId(user_id);
+
+        boolean accountExist=false;
+        for(Accounts accounts:accountsList)
+        {
+            String savedaccountNo = accounts.getAccountNo();
+            if(accountNo.equalsIgnoreCase(savedaccountNo))
+            {
+                accountExist=true;
+            }
+        }
+
+        System.out.println(accountsList);
+
+        if(accountExist==false) {
+            withdrawResponseDTO.setMessage("Account Number doesn't Exist");
+            withdrawResponseDTO.setCurrentBalance(0);
+            withdrawResponseDTO.setAmount(0);
+            return withdrawResponseDTO;
+        }
+
+
         double withdrawalAmount = withdrawRequestDTO.getAmount();
 
         Accounts UserAccount = accountRepository.getAccountForWithdrawal(user_id,accountNo);
@@ -61,8 +83,10 @@ public class AccountServiceimpl implements AccountService {
         if(withdrawalAmount < 0) {
             withdrawResponseDTO.setCurrentBalance(currBalance);
             withdrawResponseDTO.setMessage("Invalid input for withdrawal amount!");
+            withdrawResponseDTO.setAmount(withdrawRequestDTO.getAmount());
             return withdrawResponseDTO;
         }
+
 
         if(actualPin.equalsIgnoreCase(givenCode)) {
             if (currBalance > withdrawalAmount) {
@@ -70,6 +94,7 @@ public class AccountServiceimpl implements AccountService {
             } else {
                 withdrawResponseDTO.setCurrentBalance(total);
                 withdrawResponseDTO.setMessage("InSufficient Balance");
+                withdrawResponseDTO.setAmount(withdrawRequestDTO.getAmount());
             }
             UserAccount.setAccountBalance(total);
 
@@ -77,10 +102,11 @@ public class AccountServiceimpl implements AccountService {
 
             Transactions transactions = new Transactions();
             transactions.setAmount(withdrawalAmount);
-            String timeStamp = new SimpleDateFormat("yyyy/MM/dd_HH/mm/ss").format(Calendar.getInstance().getTime());
+            String timeStamp = new SimpleDateFormat("yyyy:MM:dd:HH:mm:ss").format(Calendar.getInstance().getTime());
             transactions.setDate(timeStamp);
             transactions.setUser_id(user_id);
             transactions.setRecipientAccNo(null);
+            transactions.setMyAccNo(withdrawRequestDTO.getAccountNo());
             transactions.setStatus("Success");
             transactions.setType("Withdraw");
 
@@ -94,15 +120,18 @@ public class AccountServiceimpl implements AccountService {
         }
         withdrawResponseDTO.setCurrentBalance(total);
         withdrawResponseDTO.setMessage("SuccessFul");
+        withdrawResponseDTO.setAmount(withdrawRequestDTO.getAmount());
         return withdrawResponseDTO;
     }
 
 
     @Override
-    public CreateAccountResponseDTO createAccount(CreateAccountRequestDTO createAccountRequestDTO)
-    {
+    public CreateAccountResponseDTO createAccount(CreateAccountRequestDTO createAccountRequestDTO, Long user_id) {
+
         CreateAccountResponseDTO createAccountResponseDTO=new CreateAccountResponseDTO();
+
         Accounts accounts=new Accounts();
+
         BeanUtils.copyProperties(createAccountRequestDTO,accounts);
 
         Random rand = new Random();
@@ -110,12 +139,11 @@ public class AccountServiceimpl implements AccountService {
         // Generate random integers in range 0 to 999
         int No = rand.nextInt(1000);
         String accountNo=""+No;
+
         createAccountResponseDTO.setAccountBalance(0);
         createAccountResponseDTO.setAccountNo(accountNo);
-        createAccountResponseDTO.setMessage("Account created Successful");
-        createAccountResponseDTO.setUserId(createAccountRequestDTO.getUserId());
+        createAccountResponseDTO.setMessage("Account created Successfully");
         accounts.setAccountNo(accountNo);
-        accounts.setUser_id(createAccountRequestDTO.getUserId());
         accountRepository.save(accounts);
 
         return createAccountResponseDTO;

@@ -9,5 +9,5 @@ public interface AccountService {
 
     WithdrawResponseDTO withdrawFromAccountById(WithdrawRequestDTO withdrawRequestDTO, Long id);
 
-    CreateAccountResponseDTO createAccount(CreateAccountRequestDTO createAccountRequestDTO);
+    CreateAccountResponseDTO createAccount(CreateAccountRequestDTO createAccountRequestDTO, Long id);
 }

@@ -11,16 +11,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/transaction")
+@RequestMapping(path = "/transaction")
 public class TransactionController {
 
     @Autowired
     private TransactionService transactionService;
 
     @PutMapping("/deposit/{id}")
-    public WithdrawResponseDTO depositToAccount(@RequestBody WithdrawRequestDTO withdrawRequestDTO, @PathVariable("id") Long user_id) {
-        return transactionService.depositToAccountById(withdrawRequestDTO, user_id);
+    public WithdrawResponseDTO depositToAccount(@RequestBody WithdrawRequestDTO withdrawRequestDTO, @PathVariable("id") Long id) {
+        return transactionService.depositToAccountById(withdrawRequestDTO, id);
     }
 
     @PutMapping("/transfer/{id}")

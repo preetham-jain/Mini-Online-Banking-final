@@ -8,11 +8,8 @@ import lombok.Setter;
 @Setter
 public class CreateAccountResponseDTO {
 
-
-    private Long userId;
     private String message;
     private String accountNo;
     private double accountBalance;
-
 
 }
