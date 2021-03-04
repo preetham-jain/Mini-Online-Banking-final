@@ -95,6 +95,7 @@ public class AccountServiceimpl implements AccountService {
                 withdrawResponseDTO.setCurrentBalance(total);
                 withdrawResponseDTO.setMessage("InSufficient Balance");
                 withdrawResponseDTO.setAmount(withdrawRequestDTO.getAmount());
+                return withdrawResponseDTO;
             }
             UserAccount.setAccountBalance(total);
 
