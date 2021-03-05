@@ -6,6 +6,7 @@ import com.example.Mini.Online.Banking.dto.TransactionResponseDTO;
 import com.example.Mini.Online.Banking.dto.WithdrawRequestDTO;
 import com.example.Mini.Online.Banking.dto.WithdrawResponseDTO;
 import com.example.Mini.Online.Banking.services.TransactionService;
+import com.example.Mini.Online.Banking.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,21 +18,26 @@ import java.util.List;
 public class TransactionController {
 
     @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
     private TransactionService transactionService;
 
-    @PutMapping("/deposit/{id}")
-    public WithdrawResponseDTO depositToAccount(@RequestBody WithdrawRequestDTO withdrawRequestDTO, @PathVariable("id") Long id) {
+    @PutMapping("/deposit")
+    public WithdrawResponseDTO depositToAccount(@RequestHeader(value = "Authorization") String jwt, @RequestBody WithdrawRequestDTO withdrawRequestDTO) {
+        Long id = Long.parseLong(jwtUtil.extractId(jwt.substring(7)));
         return transactionService.depositToAccountById(withdrawRequestDTO, id);
     }
 
-    @PutMapping("/transfer/{id}")
-    public String transferAmount(@RequestBody TransactionRequestDTO transactionRequestDTO, @PathVariable("id") Long user_id) {
+    @PutMapping("/transfer")
+    public String transferAmount(@RequestHeader(value = "Authorization") String jwt, @RequestBody TransactionRequestDTO transactionRequestDTO) {
+        Long user_id = Long.parseLong(jwtUtil.extractId(jwt.substring(7)));
         return transactionService.transferToAccountByAccountNo(transactionRequestDTO, user_id);
     }
 
-    @GetMapping("/pastTransaction/{id}")
-    public List<TransactionResponseDTO> getPastTransactions(@PathVariable("id") Long id)
-    {
+    @GetMapping("/pastTransaction")
+    public List<TransactionResponseDTO> getPastTransactions(@RequestHeader(value = "Authorization") String jwt) {
+        Long id = Long.parseLong(jwtUtil.extractId(jwt.substring(7)));
         return transactionService.getPastTransactions(id);
     }
 }

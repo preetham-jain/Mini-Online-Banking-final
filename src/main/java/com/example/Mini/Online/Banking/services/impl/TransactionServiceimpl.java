@@ -44,7 +44,7 @@ public class TransactionServiceimpl implements TransactionService {
 //        System.out.println(accountsList);
 
         if(accountExist==false) {
-            withdrawResponseDTO.setMessage("Account Number doesn't Exist");
+            withdrawResponseDTO.setMessage("Account Number does not Exist");
             withdrawResponseDTO.setCurrentBalance(0);
             withdrawResponseDTO.setAmount(0);
             return withdrawResponseDTO;

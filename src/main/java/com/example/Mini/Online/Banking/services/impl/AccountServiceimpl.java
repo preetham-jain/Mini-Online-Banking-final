@@ -63,7 +63,7 @@ public class AccountServiceimpl implements AccountService {
         System.out.println(accountsList);
 
         if(accountExist==false) {
-            withdrawResponseDTO.setMessage("Account Number doesn't Exist");
+            withdrawResponseDTO.setMessage("Account Number does not Exist");
             withdrawResponseDTO.setCurrentBalance(0);
             withdrawResponseDTO.setAmount(0);
             return withdrawResponseDTO;
@@ -116,11 +116,11 @@ public class AccountServiceimpl implements AccountService {
         }
         else{
             withdrawResponseDTO.setCurrentBalance(currBalance);
-            withdrawResponseDTO.setMessage("InValid Pin");
+            withdrawResponseDTO.setMessage("Invalid Pin");
             return withdrawResponseDTO;
         }
         withdrawResponseDTO.setCurrentBalance(total);
-        withdrawResponseDTO.setMessage("SuccessFul");
+        withdrawResponseDTO.setMessage("Success");
         withdrawResponseDTO.setAmount(withdrawRequestDTO.getAmount());
         return withdrawResponseDTO;
     }
@@ -138,7 +138,7 @@ public class AccountServiceimpl implements AccountService {
         Random rand = new Random();
 
         // Generate random integers in range 0 to 999
-        int No = rand.nextInt(1000);
+        int No = rand.nextInt(10000);
         String accountNo=""+No;
 
         createAccountResponseDTO.setAccountBalance(0);

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TransactionRepository extends CrudRepository<Transactions, Long> {
 
-    @Query(value="SELECT * FROM transactions t where t.user_id = ?1 ORDER BY date ASC", nativeQuery = true)
+    @Query(value="SELECT * FROM transactions t where t.user_id = ?1 ORDER BY date DESC", nativeQuery = true)
     List<Transactions> getPastTransaction(Long id);
 
 }
