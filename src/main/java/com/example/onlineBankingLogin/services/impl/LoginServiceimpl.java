@@ -21,6 +21,6 @@ public class LoginServiceimpl implements LoginService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Users users = userRepository.getUserByEmail(email);
-        return new User(String.valueOf(users.getUser_id()), users.getPassword(), new ArrayList<>());
+        return new User(users.getEmail(), users.getPassword(), new ArrayList<>());
     }
 }

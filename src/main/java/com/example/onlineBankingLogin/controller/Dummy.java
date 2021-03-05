@@ -52,7 +52,7 @@ public class Dummy {
 
         Users user = userRepository.getUserByEmail(loginRequestDTO.getEmail());
 
-        String jwt = jwtUtil.generateToken(String.valueOf(user.getUser_id()));
+        String jwt = jwtUtil.generateToken(loginRequestDTO.getEmail());
 
         LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
         loginResponseDTO.setJwt(jwt);
