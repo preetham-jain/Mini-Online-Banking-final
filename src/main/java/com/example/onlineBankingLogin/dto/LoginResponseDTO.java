@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class LoginResponseDTO {
     private String jwt;
+    private String message;
 
 //    public LoginResponseDTO(String jwt) {
 //        this.jwt = jwt;

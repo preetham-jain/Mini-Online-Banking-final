@@ -23,4 +23,10 @@ public class LoginServiceimpl implements LoginService {
         Users users = userRepository.getUserByEmail(email);
         return new User(users.getEmail(), users.getPassword(), new ArrayList<>());
     }
+
+    @Override
+    public UserDetails loadUserById(Long user_id) {
+        Users users = userRepository.getUserById(user_id);
+        return new User(String.valueOf(user_id), users.getPassword(), new ArrayList<>());
+    }
 }

@@ -33,13 +33,19 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String email = null;
         String jwt = null;
 
+        Long user_id = null;//
+
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer")) {
             jwt = authorizationHeader.substring(7);
             email = jwtUtil.extractUsername(jwt);
+
+            user_id = Long.parseLong(email);//
         }
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = loginService.loadUserByUsername(email);
+//            UserDetails userDetails = loginService.loadUserByUsername(email);
+
+            UserDetails userDetails = loginService.loadUserById(user_id);//
 
             if (jwtUtil.validateToken(jwt, userDetails)) {
 

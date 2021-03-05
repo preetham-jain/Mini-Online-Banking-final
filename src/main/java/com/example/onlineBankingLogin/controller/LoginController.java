@@ -12,13 +12,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
-public class Dummy {
+public class LoginController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -38,7 +36,7 @@ public class Dummy {
         return "hello feefal";
     }
 
-    @PostMapping(path = "/authenticate")
+    @PostMapping(path = "/login")
     public LoginResponseDTO createAuthenticationToken(@RequestBody LoginRequestDTO loginRequestDTO) throws Exception {
         try {
             authenticationManager.authenticate(
@@ -52,10 +50,13 @@ public class Dummy {
 
         Users user = userRepository.getUserByEmail(loginRequestDTO.getEmail());
 
-        String jwt = jwtUtil.generateToken(loginRequestDTO.getEmail());
+//        String jwt = jwtUtil.generateToken(loginRequestDTO.getEmail());
+
+        String jwt = jwtUtil.generateToken(String.valueOf(user.getUser_id()));
 
         LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
         loginResponseDTO.setJwt(jwt);
+        loginResponseDTO.setMessage("Success");
 
         return loginResponseDTO;
 
