@@ -50,6 +50,7 @@ Transfer money to any user already added within the same bank.
 
 # Database schema
 Tables
+![alt schema]()
 
 ## Accounts 
 * UserId(Foreign key)
