@@ -50,7 +50,7 @@ Transfer money to any user already added within the same bank.
 
 # Database schema
 Tables
-![alt schema]()
+![alt schema](https://github.com/preetham-jain/Mini-Online-Banking-final/blob/main/Screenshot%202021-03-08%20at%2012.11.22%20PM.png)
 
 ## Accounts 
 * UserId(Foreign key)
