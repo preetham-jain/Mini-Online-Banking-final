@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,6 +26,7 @@ public class TransactionServiceimpl implements TransactionService {
     private AccountRepository accountRepository;
 
     @Override
+    @Transactional
     public WithdrawResponseDTO depositToAccountById(WithdrawRequestDTO withdrawRequestDTO, Long user_id) {
 
 
@@ -106,6 +108,7 @@ public class TransactionServiceimpl implements TransactionService {
     }
 
     @Override
+    @Transactional
     public String transferToAccountByAccountNo(TransactionRequestDTO transactionRequestDTO, Long user_id) {
         String senderAccountNo = transactionRequestDTO.getSenderAccount();
 
@@ -170,6 +173,7 @@ public class TransactionServiceimpl implements TransactionService {
 
 
     @Override
+    @Transactional
     public List<TransactionResponseDTO> getPastTransactions(Long user_id)
     {
 
@@ -183,6 +187,24 @@ public class TransactionServiceimpl implements TransactionService {
               transactionResponseDTOS.add(transactionResponseDTO);
           }
           return transactionResponseDTOS;
+    }
+
+    @Override
+    @Transactional
+    public List<TransactionResponseDTO> searchTransactionType(Long user_id,String transactionType)
+    {
+        List<Transactions> transactionList=transactionRepository.getTransactionType(user_id,transactionType);
+        List<TransactionResponseDTO> transactionResponseDTOS=new ArrayList<>();
+
+        for(Transactions transactions:transactionList)
+        {
+            TransactionResponseDTO transactionResponseDTO=new TransactionResponseDTO();
+            BeanUtils.copyProperties(transactions,transactionResponseDTO);
+            transactionResponseDTOS.add(transactionResponseDTO);
+        }
+
+        return transactionResponseDTOS;
+
     }
 }
 

@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,6 +27,7 @@ public class AccountServiceimpl implements AccountService {
     private TransactionRepository transactionRepository;
 
     @Override
+    @Transactional
     public List<AccountResponseDTO> getAccountsById(Long id) {
 
         List<Accounts> accountsList = accountRepository.getAccountFromId(id);
@@ -36,10 +38,12 @@ public class AccountServiceimpl implements AccountService {
             BeanUtils.copyProperties(accounts, responseDTO);
             accountResponseDTOS.add(responseDTO);
         }
+        System.out.println("API HIT");
         return  accountResponseDTOS;
     }
 
     @Override
+    @Transactional
     public WithdrawResponseDTO withdrawFromAccountById(WithdrawRequestDTO withdrawRequestDTO, Long user_id) {
 
         WithdrawResponseDTO withdrawResponseDTO = new WithdrawResponseDTO();
@@ -127,11 +131,12 @@ public class AccountServiceimpl implements AccountService {
 
 
     @Override
+    @Transactional
     public CreateAccountResponseDTO createAccount(CreateAccountRequestDTO createAccountRequestDTO, Long user_id) {
 
         CreateAccountResponseDTO createAccountResponseDTO=new CreateAccountResponseDTO();
 
-        Accounts accounts=new Accounts();
+        Accounts accounts = new Accounts();
 
         BeanUtils.copyProperties(createAccountRequestDTO,accounts);
 
@@ -139,18 +144,19 @@ public class AccountServiceimpl implements AccountService {
 
         // Generate random integers in range 0 to 999
         int No = rand.nextInt(10000);
-        String accountNo=""+No;
+        String accountNo = "" + No;
 
         createAccountResponseDTO.setAccountBalance(0);
         createAccountResponseDTO.setAccountNo(accountNo);
         createAccountResponseDTO.setMessage("Account created Successfully");
         accounts.setAccountNo(accountNo);
+        accounts.setUser_id(user_id);
+        accounts.setPin(createAccountRequestDTO.getPin());
         accountRepository.save(accounts);
 
         return createAccountResponseDTO;
 
-
-
-
     }
+
+
 }

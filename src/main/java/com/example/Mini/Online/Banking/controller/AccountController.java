@@ -23,14 +23,6 @@ public class AccountController {
     @Autowired
     private TransactionService transactionService;
 
-    @GetMapping("/dummy")
-    public String checkingJwt(@RequestHeader(value = "Authorization") String jwt) {
-        String token = jwt.substring(7);
-        String id = jwtUtil.extractId(token);
-
-        return token + " " + id;
-    }
-
     @GetMapping("/getAccounts")
     public List<AccountResponseDTO> getAccountsById(@RequestHeader(value = "Authorization") String jwt) {
         Long id = Long.parseLong(jwtUtil.extractId(jwt.substring(7)));
@@ -42,11 +34,17 @@ public class AccountController {
         Long id = Long.parseLong(jwtUtil.extractId(jwt.substring(7)));
         return accountService.withdrawFromAccountById(withdrawRequestDTO, id);
     }
-    @CrossOrigin
+
     @PostMapping("/createAccount")
-    public CreateAccountResponseDTO createAccount(@RequestHeader(value = "Authorization") String jwt,@RequestBody CreateAccountRequestDTO createAccountRequestDTO) {
+    public CreateAccountResponseDTO createAccount(@RequestHeader(value = "Authorization") String jwt, @RequestBody CreateAccountRequestDTO createAccountRequestDTO) {
         Long id = Long.parseLong(jwtUtil.extractId(jwt.substring(7)));
         return accountService.createAccount(createAccountRequestDTO, id);
+    }
+
+    @DeleteMapping("/deleteAccount")
+    public String deleteAccount(@RequestHeader(value= "Authorization") String jwt, @RequestBody DeleteRequestDTO deleteRequestDTO)
+    {
+        return "hello";
     }
 
 

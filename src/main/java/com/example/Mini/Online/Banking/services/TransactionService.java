@@ -13,4 +13,6 @@ public interface TransactionService {
     String transferToAccountByAccountNo(TransactionRequestDTO transactionRequestDTO, Long user_id);
 
     List<TransactionResponseDTO> getPastTransactions(Long user_id);
+
+    List<TransactionResponseDTO> searchTransactionType(Long user_id,String transactionType);
 }
