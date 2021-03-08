@@ -30,7 +30,8 @@ public class RegisterServiceimpl implements RegisterService {
         //copy fields from dto to employee
         else {
             BeanUtils.copyProperties(userRequestDto, users);
-            String hashedpassword = DigestUtils.sha256Hex(userRequestDto.getPassword());
+            String hashedpassword = userRequestDto.getPassword();
+//            String hashedpassword = DigestUtils.sha256Hex(userRequestDto.getPassword());
             users.setPassword(hashedpassword);
 //            Login login = new Login();
 //            login.setEmail(users.getEmail());
